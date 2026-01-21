@@ -1,39 +1,198 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Mappamondo 3D Realistico</title>
-    <script src="https://unpkg.com/globe.gl"></script>
+    <title>Milano Onde Radio - Atmosphere Edition</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
     <style>
-        body { margin: 0; background: #000000; overflow: hidden; }
-        #globeViz { width: 100vw; height: 100vh; }
+        :root {
+            --gold: #d4af37;
+            --gold-bright: #f9e29c;
+            --bg-day: #f0f8ff;
+            --bg-night: #010810;
+            --glass: rgba(0, 26, 51, 0.95);
+        }
+
+        body { 
+            margin: 0; background: var(--bg-day); 
+            display: flex; flex-direction: column; align-items: center; 
+            height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; 
+            transition: background 1.5s ease-in-out;
+        }
+        
+        body.night-mode { background: var(--bg-night); }
+
+        /* Dashboard */
+        #dashboard {
+            position: absolute; top: 15px; z-index: 100;
+            display: flex; align-items: center; gap: 20px;
+            background: white; padding: 12px 30px; border-radius: 100px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1.5px solid var(--gold); backdrop-filter: blur(15px);
+            min-width: 900px; transition: all 0.8s;
+        }
+        body.night-mode #dashboard { background: var(--glass); color: white; }
+
+        #logo-container {
+            width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); overflow: hidden;
+        }
+        #logo-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        .zodiac-section { border-left: 1px solid rgba(212,175,55,0.3); padding: 0 15px; text-align: center; }
+        #zodiac-icon { font-size: 22px; color: var(--gold); }
+        #zodiac-name { font-size: 9px; text-transform: uppercase; color: var(--gold); font-weight: bold; }
+
+        /* Mappamondo */
+        #globe-container { position: relative; margin-top: 50px; }
+        
+        /* Definizioni Gradienti per Alba/Tramonto */
+        .ocean { transition: fill 1.5s; }
+        .land { transition: fill 1.5s; stroke: rgba(255,255,255,0.1); stroke-width: 0.5px; }
+
+        .star-in-globe { fill: white; transition: opacity 1.5s; opacity: 0; }
+        body.night-mode .star-in-globe { opacity: 1; animation: twinkle 2s infinite; }
+
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+        .city-label { font-size: 11px; font-weight: bold; fill: white; text-shadow: 1px 1px 2px black; pointer-events: none; }
+
+        #controls { position: absolute; bottom: 20px; z-index: 10; }
+        .btn { background: var(--gold); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
     </style>
 </head>
-<body>
-    <div id="globeViz"></div>
-    <script>
-        const world = Globe()
-            (document.getElementById('globeViz'))
-            // 1. STELLE LUMINOSE (generate dal codice, non spariranno mai)
-            .showStars(true)
-            .starConfig({size: 0.15, color: '#ffffff'})
-            .backgroundColor('#000000')
-            
-            // 2. ASPETTO NATURALE (immagini ad alta compatibilità)
-            .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
-            .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
-            
-            // 3. ATMOSFERA REALE
-            .showAtmosphere(true)
-            .atmosphereColor('#80aaff')
-            .atmosphereDaylightAlpha(0.2)
-            
-            // 4. POSIZIONE
-            .pointOfView({ altitude: 2.5 });
+<body class="night-mode">
 
-        // Rotazione fluida
-        world.controls().autoRotate = true;
-        world.controls().autoRotateSpeed = 0.6;
+    <div id="dashboard">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div id="logo-container"><img src="https://i.postimg.cc/9Fm87m4p/milano-onde.png"></div>
+            <div><div style="font-size: 14px; font-weight: bold;">MILANO ONDE RADIO</div></div>
+        </div>
+        <div style="flex-grow: 1;">
+            <div id="track-title" style="font-size: 13px; font-weight: bold;">Sintonizzazione...</div>
+            <div style="font-size: 11px;">👤 <span id="listener-count" style="color:var(--gold)">0</span> ascolti</div>
+        </div>
+        <audio id="audio-element" controls><source src="https://gp-server.it/listen/anaflavia/radio.mp3"></audio>
+        <div class="zodiac-section"><div id="zodiac-icon">✨</div><div id="zodiac-name">Zodiaco</div></div>
+        <div style="text-align: right; border-left: 1px solid rgba(212,175,55,0.3); padding-left: 20px;">
+            <div id="live-clock" style="font-size: 18px; font-weight: bold; color: var(--gold);">00:00:00</div>
+            <div id="live-date" style="font-size: 10px; color: #888;"></div>
+        </div>
+    </div>
+
+    <div id="globe-container">
+        <svg id="globe"></svg>
+    </div>
+
+    <div id="controls">
+        <button class="btn" onclick="toggleAtmosphere()">VIVI L'ALBA E IL TRAMONTO ☀️🌙</button>
+    </div>
+
+    <script>
+        let isNight = true;
+
+        // Funzione per cambiare atmosfera
+        function toggleAtmosphere() {
+            isNight = !isNight;
+            document.body.classList.toggle('night-mode');
+            updateGlobeColors();
+        }
+
+        function updateGlobeColors() {
+            const ocean = d3.select(".ocean");
+            const land = d3.selectAll(".land");
+            const celestial = d3.select("#celestial-body");
+
+            if (isNight) {
+                ocean.style("fill", "url(#nightGradient)");
+                land.style("fill", "#0d2c4d");
+                celestial.text("🌙").style("fill", "#fff").style("filter", "drop-shadow(0 0 10px white)");
+            } else {
+                ocean.style("fill", "url(#dayGradient)");
+                land.style("fill", "#2d8a4e");
+                celestial.text("☀️").style("fill", "#ffcc00").style("filter", "drop-shadow(0 0 20px orange)");
+            }
+        }
+
+        // D3 Globe Logic
+        const width = 800, height = 650;
+        const projection = d3.geoOrthographic().scale(300).translate([width/2, height/2]).clipAngle(90);
+        const path = d3.geoPath().projection(projection);
+        const svg = d3.select("#globe").attr("width", width).attr("height", height);
+
+        // Definizione Gradienti (L'Atmosfera)
+        const defs = svg.append("defs");
+        
+        // Gradiente Giorno (Alba/Tramonto azzurro-oro)
+        const dayGrad = defs.append("radialGradient").attr("id", "dayGradient").attr("cx", "70%").attr("cy", "30%");
+        dayGrad.append("stop").attr("offset", "0%").attr("stop-color", "#ffeb3b"); // Sole
+        dayGrad.append("stop").attr("offset", "40%").attr("stop-color", "#4fc3f7"); // Cielo chiaro
+        dayGrad.append("stop").attr("offset", "100%").attr("stop-color", "#1b3a5d"); // Oceano profondo
+
+        // Gradiente Notte (Blu profondo-Viola)
+        const nightGrad = defs.append("radialGradient").attr("id", "nightGradient").attr("cx", "70%").attr("cy", "30%");
+        nightGrad.append("stop").attr("offset", "0%").attr("stop-color", "#e0e0e0"); // Luna
+        nightGrad.append("stop").attr("offset", "50%").attr("stop-color", "#0a192f"); // Notte
+        nightGrad.append("stop").attr("offset", "100%").attr("stop-color", "#010810"); // Spazio profondo
+
+        svg.append("circle").attr("cx", width/2).attr("cy", height/2).attr("r", projection.scale()).attr("class", "ocean").style("fill", "url(#nightGradient)");
+
+        const mapGroup = svg.append("g");
+        const stars = Array.from({length: 80}, () => ({lat: Math.random()*180-90, lng: Math.random()*360-180}));
+        const starPoints = mapGroup.selectAll(".star-in-globe").data(stars).enter().append("circle").attr("class", "star-in-globe").attr("r", 1.2);
+
+        // Icona Sole/Luna interna
+        const celestialBody = mapGroup.append("text").attr("id", "celestial-body").attr("x", 0).attr("y", 0)
+            .style("font-size", "50px").style("text-anchor", "middle").style("dominant-baseline", "central").text("🌙");
+
+        const cities = [{name:'Milano',lat:45.46,lng:9.19},{name:'Roma',lat:41.89,lng:12.49},{name:'New York',lat:40.71,lng:-74},{name:'Tokyo',lat:35.68,lng:139.65}];
+
+        d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson").then(data => {
+            const countries = mapGroup.append("path").datum(data).attr("class", "land").attr("d", path).style("fill", "#0d2c4d");
+            const dots = mapGroup.selectAll(".city-point").data(cities).enter().append("circle").attr("fill", "var(--gold)").attr("r", 4);
+            const labels = mapGroup.selectAll(".city-label").data(cities).enter().append("text").attr("class", "city-label").text(d => d.name);
+
+            let rot = 0;
+            d3.timer(() => {
+                rot += 0.3;
+                projection.rotate([rot, -15]);
+                countries.attr("d", path);
+                
+                // Posiziona Sole/Luna in un punto fisso "celestiale" rispetto alla camera
+                const cPos = projection([rot + 50, 30]); 
+                celestialBody.attr("x", width/2 + 180).attr("y", height/2 - 150);
+
+                starPoints.attr("cx", d => projection([d.lng, d.lat])[0]).attr("cy", d => projection([d.lng, d.lat])[1])
+                    .style("display", d => d3.geoDistance([d.lng, d.lat], [-rot, 15]) > 1.57 ? "none" : "block");
+                dots.attr("cx", d => projection([d.lng, d.lat])[0]).attr("cy", d => projection([d.lng, d.lat])[1])
+                    .style("display", d => d3.geoDistance([d.lng, d.lat], [-rot, 15]) > 1.57 ? "none" : "block");
+                labels.attr("x", d => projection([d.lng, d.lat])[0]+7).attr("y", d => projection([d.lng, d.lat])[1]-5)
+                    .style("display", d => d3.geoDistance([d.lng, d.lat], [-rot, 15]) > 1.57 ? "none" : "block");
+            });
+        });
+
+        // API e Orologio
+        function updateUI() {
+            const now = new Date();
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString('it-IT');
+            document.getElementById('live-date').innerText = now.toLocaleDateString('it-IT', {day:'numeric', month:'short', weekday:'long'});
+        }
+        setInterval(updateUI, 1000); updateUI();
+        
+        async function fetchRadio() {
+            try {
+                const r = await fetch("https://gp-server.it/api/nowplaying/1");
+                const d = await r.json();
+                document.getElementById('track-title').innerText = d.now_playing.song.text;
+                document.getElementById('listener-count').innerText = d.listeners.total;
+            } catch(e) {}
+        }
+        setInterval(fetchRadio, 10000); fetchRadio();
+
+        // Calcolo Zodiaco
+        const m = new Date().getMonth()+1, d = new Date().getDate();
+        const signs = [{n:"Capricorno",i:"♑",m:1,d:20},{n:"Acquario",i:"♒",m:2,d:19},{n:"Pesci",i:"♓",m:3,d:20},{n:"Ariete",i:"♈",m:4,d:20},{n:"Toro",i:"♉",m:5,d:21},{n:"Gemelli",i:"♊",m:6,d:21},{n:"Cancro",i:"♋",m:7,d:22},{n:"Leone",i:"♌",m:8,d:23},{n:"Vergine",i:"♍",m:9,d:23},{n:"Bilancia",i:"♎",m:10,d:23},{n:"Scorpione",i:"♏",m:11,d:22},{n:"Sagittario",i:"♐",m:12,d:21}];
+        const s = (m===12 && d>=22) || (m===1 && d<=19) ? signs[0] : signs.find((x,i)=> (m===x.m && d<=x.d) || (m===x.m-1 && d>signs[i-1]?.d));
+        document.getElementById('zodiac-icon').innerText = s.i; document.getElementById('zodiac-name').innerText = s.n;
     </script>
 </body>
 </html>
