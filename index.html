@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Mappamondo 3D Funzionante</title>
+    <title>Mappamondo 3D Realistico</title>
     <script src="https://unpkg.com/globe.gl"></script>
     <style>
         body { margin: 0; background: #000; overflow: hidden; }
@@ -14,16 +14,25 @@
     <script>
         const world = Globe()
             (document.getElementById('globeViz'))
+            // 1. Sfondo con stelle reali
+            .showStars(true)
+            .starConfig({size: 0.1, color: '#ffffff'})
             .backgroundColor('#000005')
-            .showAtmosphere(true)
-            .atmosphereColor('#3a228a')
-            // LINK COMPLETI CON HTTPS (Fondamentale!)
+            
+            // 2. Texture della Terra Notturna (NASA)
             .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
-            .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png');
+            .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
+            
+            // 3. Atmosfera luminosa azzurra
+            .showAtmosphere(true)
+            .atmosphereColor('#4356fb')
+            .atmosphereDaylightAlpha(0.15)
+            
+            // 4. Configurazione rotazione e vista
+            .pointOfView({ altitude: 2.5 });
 
-        // Rotazione automatica
         world.controls().autoRotate = true;
-        world.controls().autoRotateSpeed = 1.0;
+        world.controls().autoRotateSpeed = 0.8;
     </script>
 </body>
 </html>
