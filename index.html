@@ -5,7 +5,7 @@
     <title>Mappamondo 3D Realistico</title>
     <script src="https://unpkg.com/globe.gl"></script>
     <style>
-        body { margin: 0; background: #000; overflow: hidden; }
+        body { margin: 0; background: #000000; overflow: hidden; }
         #globeViz { width: 100vw; height: 100vh; }
     </style>
 </head>
@@ -14,25 +14,26 @@
     <script>
         const world = Globe()
             (document.getElementById('globeViz'))
-            // 1. Sfondo con stelle reali
+            // 1. STELLE LUMINOSE (generate dal codice, non spariranno mai)
             .showStars(true)
-            .starConfig({size: 0.1, color: '#ffffff'})
-            .backgroundColor('#000005')
+            .starConfig({size: 0.15, color: '#ffffff'})
+            .backgroundColor('#000000')
             
-            // 2. Texture della Terra Notturna (NASA)
-            .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
+            // 2. ASPETTO NATURALE (immagini ad alta compatibilità)
+            .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
             .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
             
-            // 3. Atmosfera luminosa azzurra
+            // 3. ATMOSFERA REALE
             .showAtmosphere(true)
-            .atmosphereColor('#4356fb')
-            .atmosphereDaylightAlpha(0.15)
+            .atmosphereColor('#80aaff')
+            .atmosphereDaylightAlpha(0.2)
             
-            // 4. Configurazione rotazione e vista
+            // 4. POSIZIONE
             .pointOfView({ altitude: 2.5 });
 
+        // Rotazione fluida
         world.controls().autoRotate = true;
-        world.controls().autoRotateSpeed = 0.8;
+        world.controls().autoRotateSpeed = 0.6;
     </script>
 </body>
 </html>
