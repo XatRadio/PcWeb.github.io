@@ -2,69 +2,28 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Mappamondo 3D - Global Network</title>
+    <title>Mappamondo 3D Funzionante</title>
     <script src="https://unpkg.com/globe.gl"></script>
     <style>
-        body { margin: 0; background: #000; overflow: hidden; font-family: sans-serif; }
+        body { margin: 0; background: #000; overflow: hidden; }
         #globeViz { width: 100vw; height: 100vh; }
-        .overlay {
-            position: absolute; top: 20px; left: 20px; color: white;
-            background: rgba(0, 0, 0, 0.6); padding: 15px; border-radius: 10px;
-            border: 1px solid #004d99; pointer-events: none; z-index: 10;
-        }
-        h1 { margin: 0; font-size: 18px; color: #00ccff; }
     </style>
 </head>
 <body>
-    <div class="overlay">
-        <h1>Global City Network</h1>
-        <p>Rotazione interattiva attiva</p>
-    </div>
     <div id="globeViz"></div>
-
     <script>
         const world = Globe()
             (document.getElementById('globeViz'))
             .backgroundColor('#000005')
             .showAtmosphere(true)
             .atmosphereColor('#3a228a')
-            .atmosphereDaylightAlpha(0.1)
-            // LINK CORRETTI CON HTTPS:
+            // LINK COMPLETI CON HTTPS (Fondamentale!)
             .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
             .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png');
 
-        // Caricamento città
-        fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_populated_places_simple.geojson')
-            .then(res => res.json())
-            .then(places => {
-                world.labelsData(places.features)
-                    .labelLat(d => d.properties.latitude)
-                    .labelLng(d => d.properties.longitude)
-                    .labelText(d => d.properties.name)
-                    .labelSize(0.1)
-                    .labelDotRadius(0.1)
-                    .labelColor(() => 'rgba(255, 255, 255, 0.7)');
-            });
-
-        // Archi luminosi
-        const arcsData = [...Array(15).keys()].map(() => ({
-            startLat: (Math.random() - 0.5) * 180,
-            startLng: (Math.random() - 0.5) * 360,
-            endLat: (Math.random() - 0.5) * 180,
-            endLng: (Math.random() - 0.5) * 360,
-            color: ['#ff0000', '#00ffff', '#ffff00'][Math.floor(Math.random() * 3)]
-        }));
-
-        world.arcsData(arcsData)
-            .arcColor('color')
-            .arcDashLength(0.4)
-            .arcDashGap(4)
-            .arcDashAnimateTime(2000)
-            .arcStroke(0.4);
-
+        // Rotazione automatica
         world.controls().autoRotate = true;
-        world.controls().autoRotateSpeed = 0.5;
-        world.pointOfView({ altitude: 2.5 });
+        world.controls().autoRotateSpeed = 1.0;
     </script>
 </body>
 </html>
