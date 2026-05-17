@@ -6,7 +6,7 @@
     <title>Milano Onde Radio</title>
     <style>
         body {
-            /* Imposta la GIF come sfondo */
+            /* Imposta la nuova GIF come sfondo */
             background-image: url('sfondoradiospiria.gif');
             background-size: cover;
             background-position: center;
@@ -16,21 +16,46 @@
             padding: 0;
             font-family: Arial, sans-serif;
             color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
 
-        /* Contenitore principale per i tuoi contenuti */
-        .content {
+        /* Stile per rendere visibili ed eleganti i testi sopra lo sfondo */
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 30px;
+        }
+
+        .container {
             text-align: center;
-            padding: 50px 20px;
+            background: rgba(0, 0, 0, 0.5); /* Sfondo scuro semitrasparente per leggere meglio */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
     </style>
 </head>
 <body>
 
-    <div class="content">
+    <div class="container">
         <h1>Milano Onde Radio</h1>
         <p>ACHILLE</p>
-        </div>
+
+        <audio controls autoplay>
+            <source src="http://95.154.192.123:8012/;stream.mp3" type="audio/mpeg">
+            Il tuo browser non supporta l'elemento audio.
+        </audio>
+    </div>
 
 </body>
 </html>
