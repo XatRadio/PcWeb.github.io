@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Milano Onde Radio</title>
     <style>
+        /* Questo serve a far sì che il video occupi tutta la pagina senza bordi bianchi */
         html, body {
             margin: 0;
             padding: 0;
@@ -12,16 +13,19 @@
             overflow: hidden;
             background-color: black;
         }
-        img {
+        video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Riempie lo schermo adattandosi */
+            pointer-events: none; /* Nasconde il tasto destro sul video */
         }
     </style>
 </head>
 <body>
 
-    <img src="MRO.gif" alt="Sfondo">
+    <video autoplay loop muted playsinline>
+        <source src="ispiria.mp4" type="video/mp4">
+    </video>
 
 </body>
 </html>
