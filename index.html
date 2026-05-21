@@ -12,20 +12,18 @@
             overflow: hidden;
             background-color: #000;
         }
-        .sfondo-fullscreen {
+        video {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('https://xatradio.github.io/PcWeb.github.io/lory.gif');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
+            object-fit: cover;
+            object-position: center center;
         }
     </style>
 </head>
 <body>
-    <div class="sfondo-fullscreen"></div>
+    <video src="https://xatradio.github.io/PcWeb.github.io/lory.mp4" autoplay loop muted playsinline></video>
 </body>
 </html>
