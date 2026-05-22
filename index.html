@@ -2,28 +2,114 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Milano Onde Radio</title>
     <style>
-        html, body {
+        /* Reset base */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            background-color: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            overflow: hidden; /* Evita barre di scorrimento fastidiose con lo sfondo */
         }
-        video {
+
+        /* CONFIGURAZIONE VIDEO DI SFONDO */
+        .video-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            object-position: center center;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Lo posiziona dietro ai contenuti */
+            background-color: #000; /* Sfondo nero di sicurezza se il video carica lentamente */
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Copre lo schermo senza distorcersi */
+        }
+
+        /* STRUTTURA CONTENUTI SOPRA IL VIDEO */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4); /* Un velo scuro per far leggere meglio i testi */
+            text-align: center;
+            padding: 20px;
+        }
+
+        .box-radio {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px); /* Effetto vetro sfocato molto moderno */
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+
+        p.firma {
+            font-size: 1rem;
+            letter-spacing: 4px;
+            color: #ffdd57; /* Colore d'impatto per il nome */
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+
+        /* Spazio per un eventuale player audio futuro */
+        .player-placeholder {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
-    <video src="https://xatradio.github.io/PcWeb.github.io/lory.mp4" autoplay loop muted playsinline></video>
+
+    <div class="video-container">
+        <video autoplay muted loop playsinline>
+            <source src="lory.mp4" type="video/mp4">
+            Il tuo browser non supporta i video HTML5.
+        </video>
+    </div>
+
+    <div class="main-content">
+        <div class="box-radio">
+            <h1>Milano Onde Radio</h1>
+            <p class="firma">ACHILLE</p>
+            
+            <div class="player-placeholder">
+                In onda ora...
+                </div>
+        </div>
+    </div>
+
 </body>
 </html>
