@@ -1,0 +1,44 @@
+<script>
+/**
+ * PROTOCOLLO DI PROTEZIONE DASHBOARD
+ * Impedisce la modifica dei crediti e del marchio.
+ */
+(function() {
+    // 1. CONFIGURAZIONE CREDENZIALI (Modifica queste per ogni dash)
+    const MARCHIO_PROTETTO = "MILANO ONDE RADIO";
+    const SLOGAN_PROTETTO = "ACHILLE";
+
+    // 2. FUNZIONE DI BLOCCO
+    function attivareBlocco() {
+        document.body.innerHTML = `
+            <div style="
+                position:fixed; inset:0; background:#000; z-index:999999; 
+                display:flex; align-items:center; justify-content:center; 
+                flex-direction:column; color:#ff005e; font-size:28px; 
+                font-family:Arial, sans-serif; text-align:center;
+            ">
+                PLAYER BLOCCATO<br><br>
+                INTEGRITA ALTERATA
+            </div>`;
+        throw new Error("Sistema di protezione attivato: Integrità compromessa.");
+    }
+
+    // 3. VERIFICA COSTANTE
+    function verificareIntegrita() {
+        // Cerca i testi nelle classi specifiche (assicurati che le tue dash usino queste classi)
+        const elementoTitolo = document.querySelector('.titulo-neon');
+        const elementoSlogan = document.querySelector('.nome-radio');
+
+        const titoloAttuale = elementoTitolo ? elementoTitolo.textContent.trim() : "";
+        const sloganAttuale = elementoSlogan ? elementoSlogan.textContent.trim() : "";
+
+        if (titoloAttuale !== MARCHIO_PROTETTO || sloganAttuale !== SLOGAN_PROTETTO) {
+            attivareBlocco();
+        }
+    }
+
+    // Esecuzione immediata e controllo ricorsivo ogni 2 secondi
+    verificareIntegrita();
+    setInterval(verificareIntegrita, 2000);
+})();
+</script>

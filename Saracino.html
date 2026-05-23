@@ -1,0 +1,847 @@
+<html lang="it" class="translated-ltr"><head>
+<meta charset="UTF-8">
+<title>𝓡𝓐𝓓𝓘𝓞 𝓜𝓡𝓐</title>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+body{
+    background:transparent;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+    font-family:'Orbitron',sans-serif;
+    overflow:hidden;
+    user-select:none;
+}
+
+.dashboard-container{
+    width:728px;
+    height:486px;
+    background:url('https://xatimg.com/image/Gj0wBNyS5C5T.jpg') no-repeat center center;
+    background-size:100% 100%;
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 0 50px rgba(0,255,255,0.4);
+    border:1px solid #111;
+    overflow:hidden;
+}
+
+/* AVISO */
+
+#internal-warning{
+    position:absolute;
+    top:-100%;
+    left:50%;
+    transform:translateX(-50%);
+    width:80%;
+    background:rgba(255,0,0,0.95);
+    color:white;
+    padding:15px;
+    border-radius:0 0 15px 15px;
+    text-align:center;
+    z-index:1000;
+    border:2px solid #fff;
+    box-shadow:0 0 30px #ff0000;
+    transition:top .4s ease-out;
+}
+
+#internal-warning.active{
+    top:0;
+}
+
+/* RGB */
+
+@keyframes rainbowText{
+    0%{color:#ff0000;text-shadow:0 0 8px #ff0000;}
+    20%{color:#ffff00;text-shadow:0 0 8px #ffff00;}
+    40%{color:#00ff00;text-shadow:0 0 8px #00ff00;}
+    60%{color:#00ffff;text-shadow:0 0 8px #00ffff;}
+    80%{color:#ff00ff;text-shadow:0 0 8px #ff00ff;}
+    100%{color:#ff0000;text-shadow:0 0 8px #ff0000;}
+}
+
+.floating-name{
+    position:absolute;
+    top:8px;
+    width:100%;
+    text-align:center;
+    font-size:26px;
+    font-weight:bold;
+    z-index:50;
+    animation:rainbowText 5s linear infinite;
+}
+
+/* BORDAS */
+
+.ocean-border{
+    position:absolute;
+    z-index:1;
+    pointer-events:none;
+    background:linear-gradient(
+    180deg,
+    #ff0000,
+    #ff7f00,
+    #ffff00,
+    #00ff00,
+    #0000ff,
+    #4b0082,
+    #8b00ff,
+    #ff0000);
+    background-size:100% 400%;
+    animation:multicolorFlow 4s linear infinite;
+}
+
+.side-left{
+    left:0;
+    top:0;
+    width:14px;
+    height:100%;
+}
+
+.side-right{
+    right:0;
+    top:0;
+    width:14px;
+    height:100%;
+}
+
+.side-top{
+    top:0;
+    left:0;
+    width:100%;
+    height:14px;
+}
+
+.side-bottom{
+    bottom:0;
+    left:0;
+    width:100%;
+    height:14px;
+}
+
+@keyframes multicolorFlow{
+    0%{
+        background-position:0% 0%;
+        filter:hue-rotate(0deg);
+    }
+
+    100%{
+        background-position:0% 100%;
+        filter:hue-rotate(360deg);
+    }
+}
+
+/* TEXTO SCROLL */
+
+#marquee-container{
+    position:absolute;
+    bottom:45px;
+    width:92%;
+    overflow:hidden;
+    z-index:20;
+}
+
+#marquee-text{
+    display:inline-block;
+    padding-left:100%;
+    animation:marquee 15s linear infinite,
+    rainbowText 5s linear infinite;
+    font-size:15px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+@keyframes marquee{
+    0%{
+        transform:translate(0,0);
+    }
+
+    100%{
+        transform:translate(-100%,0);
+    }
+}
+
+/* DATA */
+
+#date-display{
+    position:absolute;
+    top:18px;
+    right:78px;
+    color:#ffffff;
+    font-size:13px;
+    font-weight:bold;
+    text-shadow:0 0 10px #00ffff;
+    z-index:100;
+    animation:rainbowText 5s linear infinite;
+}
+
+/* RELOGIO */
+
+.clock-face{
+    width:180px;
+    height:180px;
+    position:absolute;
+    top:45px;
+    right:35px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:10;
+}
+
+.number{
+    position:absolute;
+    width:100%;
+    height:100%;
+    text-align:center;
+    font-size:14px;
+    font-weight:bold;
+    padding:5px;
+    box-sizing:border-box;
+    text-shadow:2px 2px 4px #000;
+}
+
+.n12{
+    color:#ff0000;
+}
+
+.n3{
+    color:#00ff00;
+    transform:rotate(90deg);
+}
+
+.n6{
+    color:#00ffff;
+    transform:rotate(180deg);
+}
+
+.n9{
+    color:#ff00ff;
+    transform:rotate(270deg);
+}
+
+.number span{
+    display:block;
+}
+
+.n3 span{
+    transform:rotate(-90deg);
+}
+
+.n6 span{
+    transform:rotate(-180deg);
+}
+
+.n9 span{
+    transform:rotate(-270deg);
+}
+
+/* PONTEIROS */
+
+.hand{
+    position:absolute;
+    bottom:50%;
+    left:50%;
+    transform-origin:bottom;
+    border-radius:10px;
+    z-index:15;
+}
+
+.hour-hand{
+    width:4px;
+    height:38px;
+    transform:translateX(-50%);
+    background:#ff3300;
+    box-shadow:0 0 10px #ff3300;
+}
+
+.min-hand{
+    width:2px;
+    height:52px;
+    transform:translateX(-50%);
+    background:#ccff00;
+    box-shadow:0 0 10px #ccff00;
+}
+
+.sec-hand{
+    width:1px;
+    height:62px;
+    transform:translateX(-50%);
+    background:#00ffcc;
+    box-shadow:0 0 10px #00ffcc;
+}
+
+#digital-clock{
+    position:absolute;
+    bottom:58px;
+    color:#fff;
+    font-size:10px;
+    font-weight:bold;
+    text-shadow:0 0 10px #ff00ff;
+}
+
+/* CONTROLOS */
+
+.controls-row{
+    position:absolute;
+    bottom:15px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    z-index:100;
+}
+
+.btn-control{
+    background:transparent;
+    cursor:pointer;
+    font-size:18px;
+    font-weight:bold;
+    border:none;
+    font-family:'Orbitron',sans-serif;
+    animation:rainbowText 4s linear infinite;
+}
+
+input[type=range]{
+    -webkit-appearance:none;
+    width:130px;
+    background:transparent;
+}
+
+input[type=range]::-webkit-slider-runnable-track{
+    width:100%;
+    height:8px;
+    background:linear-gradient(
+    90deg,
+    #ff0000,
+    #ffff00,
+    #00ff00,
+    #00ffff,
+    #ff00ff);
+    border-radius:5px;
+}
+
+input[type=range]::-webkit-slider-thumb{
+    height:20px;
+    width:20px;
+    border-radius:50%;
+    background:#fff;
+    -webkit-appearance:none;
+    margin-top:-6px;
+    box-shadow:0 0 10px #fff;
+}
+
+/* CUBO */
+
+.scene{
+    position:absolute;
+    left:55px;
+    top:45px;
+    width:100px;
+    height:100px;
+    perspective:600px;
+    z-index:50;
+}
+
+.cube{
+    width:100%;
+    height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    animation:rotateCube 12s infinite linear;
+}
+
+@keyframes rotateCube{
+    0%{
+        transform:rotateY(0) rotateX(0);
+    }
+
+    100%{
+        transform:rotateY(360deg) rotateX(360deg);
+    }
+}
+
+.face{
+    position:absolute;
+    width:100px;
+    height:100px;
+    border:2px solid rgba(255,255,255,0.8);
+    background-size:cover;
+    background-position:center;
+    background-image:url('https://xatimg.com/image/iS0udXaCihcZ.jpg');
+}
+
+.front{transform:translateZ(50px);}
+.back{transform:rotateY(180deg) translateZ(50px);}
+.right{transform:rotateY(90deg) translateZ(50px);}
+.left{transform:rotateY(-90deg) translateZ(50px);}
+.top{transform:rotateX(90deg) translateZ(50px);}
+.bottom{transform:rotateX(-90deg) translateZ(50px);}
+
+/* OUVINTES */
+
+.song-info{
+    position:absolute;
+    left:20px;
+    top:165px;
+    width:150px;
+    z-index:100;
+    text-align:center;
+}
+
+#listeners{
+    margin-top:8px;
+    font-size:13px;
+    color:#00ffcc;
+    font-weight:bold;
+    text-shadow:0 0 10px #000;
+}
+
+/* ASSINATURA */
+
+.signature{
+    position:absolute;
+    bottom:15px;
+    right:25px;
+    font-size:11px;
+    font-weight:bold;
+    z-index:30;
+    color:#fff;
+    animation:rainbowText 5s linear infinite;
+}
+
+</style>
+<link type="text/css" rel="stylesheet" charset="UTF-8" href="https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.zZZZhVqDDCw.L.W.O/am=BBDg/d=0/rs=AN8SPfobRl8UQM01cRTktRUhaChx5xxdlg/m=el_main_css"></head>
+
+<body oncontextmenu="triggerInternalWarning(event);" ondragstart="triggerInternalWarning(event);">
+
+<div class="dashboard-container">
+
+<div id="internal-warning" class="">
+<h2><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">🛑 ACCESSO NEGATO</font></font></h2>
+<p><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">𝓡𝓐𝓓𝓘𝓞 𝓜𝓡𝓐</font></font></p>
+</div>
+
+<div class="ocean-border side-top"></div>
+<div class="ocean-border side-bottom"></div>
+<div class="ocean-border side-left"></div>
+<div class="ocean-border side-right"></div>
+
+<div class="floating-name"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">
+𝓡𝓐𝓓𝓘𝓞 𝓜𝓡𝓐
+</font></font></div>
+
+<!-- DATA -->
+
+<div id="date-display"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">15/05/2026</font></font></div>
+
+<!-- CUBO -->
+
+<div class="scene">
+
+<div class="cube">
+
+<div class="face front" style="background-image: url(&quot;https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c2/da/ac/c2daac26-46cd-5d7c-bafd-b92baef69340/cover_4099885244179.jpg/600x600bb.jpg&quot;);"></div>
+<div class="face back" style="background-image: url(&quot;https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c2/da/ac/c2daac26-46cd-5d7c-bafd-b92baef69340/cover_4099885244179.jpg/600x600bb.jpg&quot;);"></div>
+<div class="face right" style="background-image: url(&quot;https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c2/da/ac/c2daac26-46cd-5d7c-bafd-b92baef69340/cover_4099885244179.jpg/600x600bb.jpg&quot;);"></div>
+<div class="face left" style="background-image: url(&quot;https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c2/da/ac/c2daac26-46cd-5d7c-bafd-b92baef69340/cover_4099885244179.jpg/600x600bb.jpg&quot;);"></div>
+<div class="face top" style="background-image: url(&quot;https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c2/da/ac/c2daac26-46cd-5d7c-bafd-b92baef69340/cover_4099885244179.jpg/600x600bb.jpg&quot;);"></div>
+<div class="face bottom" style="background-image: url(&quot;https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c2/da/ac/c2daac26-46cd-5d7c-bafd-b92baef69340/cover_4099885244179.jpg/600x600bb.jpg&quot;);"></div>
+
+</div>
+
+</div>
+
+<!-- OUVINTES -->
+
+<div class="song-info">
+
+<div id="listeners"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">👥 9 ascoltatori</font></font></div>
+
+</div>
+
+<!-- RELÓGIO -->
+
+<div class="clock-face">
+
+<div class="number n12"><span><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">12</font></font></span></div>
+<div class="number n3"><span><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">3</font></font></span></div>
+<div class="number n6"><span><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">6</font></font></span></div>
+<div class="number n9"><span><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">9</font></font></span></div>
+
+<div class="hand hour-hand" id="hour-hand" style="transform: translateX(-50%) rotate(510deg);"></div>
+<div class="hand min-hand" id="min-hand" style="transform: translateX(-50%) rotate(54deg);"></div>
+<div class="hand sec-hand" id="sec-hand" style="transform: translateX(-50%) rotate(54deg);"></div>
+
+<div id="digital-clock"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">17:09:09</font></font></div>
+
+</div>
+
+<!-- CONTROLOS -->
+
+<div class="controls-row">
+
+<button class="btn-control" onclick="startRadio()"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">
+GIOCARE
+</font></font></button>
+
+<input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+
+<button class="btn-control" onclick="stopRadio()"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">
+FERMARE
+</font></font></button>
+
+</div>
+
+<!-- TEXTO -->
+
+<div id="marquee-container">
+
+<div id="marquee-text"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">LIVE: Menudo - Lo Que Juramos</font></font></div>
+
+</div>
+
+<div class="signature"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">
+𝓡𝓐𝓓𝓘𝓞 𝓜𝓡𝓐
+</font></font></div>
+
+</div>
+
+<audio id="radioPlayer" src="https://stm1.marioaleixo.top:7002/stream" crossorigin="anonymous">
+</audio>
+
+<script>
+
+/* =========================================
+ 
+========================================= */
+
+const STREAM_URL =
+atob("aHR0cHM6Ly9zdG0xLm1hcmlvYWxlaXhvLnRvcDo3MDAyL3N0cmVhbQ==");
+
+const STATS_URL =
+atob("aHR0cHM6Ly9zdG0xLm1hcmlvYWxlaXhvLnRvcDo3MDAyL3N0YXRzP2pzb249MSZjYWxsYmFjaz1zdGF0c0NCJnJhbmQ9");
+
+const ITUNES_URL =
+atob("aHR0cHM6Ly9pdHVuZXMuYXBwbGUuY29tL3NlYXJjaD90ZXJtPQ==");
+
+const ITUNES_END =
+atob("Jm1lZGlhPW11c2ljJmxpbWl0PTEmY2FsbGJhY2s9Y292ZXJDQg==");
+
+const FALLBACK_COVER =
+atob("aHR0cHM6Ly94YXRpbWcuY29tL2ltYWdlL2lTMHVkWGFDaWhjWi5qcGc=");
+
+const RADIO_NAME =
+"𝓡𝓐𝓓𝓘𝓞 𝓜𝓡𝓐";
+
+/* =========================================
+  
+========================================= */
+
+const audio =
+document.getElementById('radioPlayer');
+
+audio.src = STREAM_URL;
+
+const trackInfo =
+document.getElementById('marquee-text');
+
+const cubeFaces =
+document.querySelectorAll('.face');
+
+const listenersEl =
+document.getElementById('listeners');
+
+/* =========================================
+ 
+========================================= */
+
+function lockPlayer(){
+
+    audio.pause();
+
+    document.body.innerHTML = `
+
+    <div style="
+    width:100vw;
+    height:100vh;
+    background:#000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    color:#ff0000;
+    font-family:Arial;
+    ">
+
+    <h1>PLAYER BLOQUEADO</h1>
+
+    <p>Proteção ativada</p>
+
+    </div>
+
+    `;
+}
+
+function securityCheck(){
+
+    /* STREAM */
+
+    if(
+        audio.src.indexOf(STREAM_URL) === -1
+    ){
+        lockPlayer();
+    }
+
+    /* NOME RADIO */
+
+    if(
+        !document.body.innerText.includes(RADIO_NAME)
+    ){
+        lockPlayer();
+    }
+
+    /* BACKGROUND */
+
+    const bg =
+window.getComputedStyle(
+document.querySelector('.dashboard-container')
+).backgroundImage;
+
+if(
+    !bg.includes("Gj0wBNyS5C5T")
+){
+    lockPlayer();
+}
+
+}
+
+/* =========================================
+
+========================================= */
+
+function triggerInternalWarning(e){
+
+    e.preventDefault();
+
+    const warn =
+    document.getElementById('internal-warning');
+
+    warn.classList.add('active');
+
+    setTimeout(()=>{
+
+        warn.classList.remove('active');
+
+    },3000);
+
+    return false;
+}
+
+/* =========================================
+   PLAY / STOP
+========================================= */
+
+function startRadio(){
+    audio.play();
+}
+
+function stopRadio(){
+    audio.pause();
+}
+
+/* =========================================
+   VOLUME
+========================================= */
+
+document.getElementById('volumeSlider').oninput = e=>{
+
+    audio.volume = e.target.value;
+
+};
+
+/* =========================================
+
+========================================= */
+
+function updateDate(){
+
+    const now = new Date();
+
+    const day =
+    String(now.getDate()).padStart(2,'0');
+
+    const month =
+    String(now.getMonth()+1).padStart(2,'0');
+
+    const year =
+    now.getFullYear();
+
+    document.getElementById('date-display').innerText =
+    `${day}/${month}/${year}`;
+}
+
+/* =========================================
+ 
+========================================= */
+
+function updateClock(){
+
+    const now = new Date();
+
+    document.getElementById('sec-hand').style.transform =
+    `translateX(-50%) rotate(${(now.getSeconds()/60)*360}deg)`;
+
+    document.getElementById('min-hand').style.transform =
+    `translateX(-50%) rotate(${(now.getMinutes()/60)*360}deg)`;
+
+    document.getElementById('hour-hand').style.transform =
+    `translateX(-50%) rotate(${(now.getHours()/12)*360}deg)`;
+
+    document.getElementById('digital-clock').innerText =
+    now.toLocaleTimeString('pt-PT');
+}
+
+/* =========================================
+ 
+========================================= */
+
+function fetchCover(track){
+
+    if(!track) return;
+
+    const oldScript =
+    document.getElementById("coverScript");
+
+    if(oldScript){
+        oldScript.remove();
+    }
+
+    const script =
+    document.createElement("script");
+
+    script.id = "coverScript";
+
+    script.src =
+    ITUNES_URL +
+    encodeURIComponent(track) +
+    ITUNES_END;
+
+    document.body.appendChild(script);
+}
+
+/* =========================================
+  
+========================================= */
+
+function coverCB(data){
+
+    let coverUrl =
+    FALLBACK_COVER;
+
+    if(
+        data &&
+        data.results &&
+        data.results.length > 0
+    ){
+
+        coverUrl =
+        data.results[0]
+        .artworkUrl100
+        .replace('100x100','600x600');
+    }
+
+    cubeFaces.forEach(face=>{
+
+        face.style.backgroundImage =
+        `url('${coverUrl}')`;
+
+    });
+}
+
+/* =========================================
+   ICECAST
+========================================= */
+
+function statsCB(data){
+
+    if(!data) return;
+
+    const listeners =
+    data.uniques ||
+    data.listeners ||
+    data.currentlisteners ||
+    0;
+
+    listenersEl.textContent =
+    `👥 ${listeners} ouvintes`;
+
+    if(data.songtitle){
+
+        const parts =
+        data.songtitle.split(" - ");
+
+        const artist =
+        parts[0] || RADIO_NAME;
+
+        const title =
+        parts[1] || data.songtitle;
+
+        const fullSong =
+        artist + " - " + title;
+
+        trackInfo.textContent =
+        "EM DIRETO: " + fullSong;
+
+        fetchCover(fullSong);
+    }
+}
+
+/* =========================================
+   
+========================================= */
+
+function statsUpdate(){
+
+    const oldScript =
+    document.getElementById("jsonpScript");
+
+    if(oldScript){
+        oldScript.remove();
+    }
+
+    const script =
+    document.createElement("script");
+
+    script.id = "jsonpScript";
+
+    script.src =
+    STATS_URL + Math.random();
+
+    document.body.appendChild(script);
+}
+
+/* =========================================
+  
+========================================= */
+
+setInterval(updateClock,1000);
+
+setInterval(statsUpdate,10000);
+
+setInterval(securityCheck,3000);
+
+updateClock();
+
+updateDate();
+
+statsUpdate();
+
+securityCheck();
+
+</script><div id="goog-gt-tt" class="VIpgJd-yAWNEb-L7lbkb skiptranslate" style="border-radius: 12px; margin: 0 0 0 -23px; padding: 0; font-family: 'Google Sans', Arial, sans-serif;" data-id=""><div id="goog-gt-vt" class="VIpgJd-yAWNEb-hvhgNd"><div class="VIpgJd-yAWNEb-hvhgNd-Ud7fr"><img src="https://fonts.gstatic.com/s/i/productlogos/translate/v14/24px.svg" width="24" height="24" alt=""><div class=" VIpgJd-yAWNEb-hvhgNd-IuizWc-i3jM8c " dir="ltr">Testo originale</div></div><div class="VIpgJd-yAWNEb-hvhgNd-k77Iif"><div id="goog-gt-original-text" class="VIpgJd-yAWNEb-nVMfcd-fmcmS VIpgJd-yAWNEb-hvhgNd-axAV1"></div></div><div class="VIpgJd-yAWNEb-hvhgNd-N7Eqid ltr"><div class="VIpgJd-yAWNEb-hvhgNd-N7Eqid-B7I4Od ltr" dir="ltr"><div class="VIpgJd-yAWNEb-hvhgNd-UTujCb">Valuta questa traduzione</div><div class="VIpgJd-yAWNEb-hvhgNd-eO9mKe">Il tuo feedback verrà utilizzato per contribuire a migliorare Google Traduttore</div></div><div class="VIpgJd-yAWNEb-hvhgNd-xgov5 ltr"><button id="goog-gt-thumbUpButton" type="button" class="VIpgJd-yAWNEb-hvhgNd-bgm6sf" title="Traduzione di buona qualità" aria-label="Traduzione di buona qualità" aria-pressed="false"><span id="goog-gt-thumbUpIcon"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M21 7h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 0S7.08 6.85 7 7H2v13h16c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73V9c0-1.1-.9-2-2-2zM7 18H4V9h3v9zm14-7l-3 7H9V8l4.34-4.34L12 9h9v2z"></path></svg></span><span id="goog-gt-thumbUpIconFilled"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M21 7h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 0S7.08 6.85 7 7v13h11c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73V9c0-1.1-.9-2-2-2zM5 7H1v13h4V7z"></path></svg></span></button><button id="goog-gt-thumbDownButton" type="button" class="VIpgJd-yAWNEb-hvhgNd-bgm6sf" title="Traduzione mediocre" aria-label="Traduzione mediocre" aria-pressed="false"><span id="goog-gt-thumbDownIcon"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M3 17h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 24s7.09-6.85 7.17-7h5V4H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2zM17 6h3v9h-3V6zM3 13l3-7h9v10l-4.34 4.34L12 15H3v-2z"></path></svg></span><span id="goog-gt-thumbDownIconFilled"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M3 17h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 24s7.09-6.85 7.17-7V4H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2zm16 0h4V4h-4v13z"></path></svg></span></button></div></div><div id="goog-gt-votingHiddenPane" class="VIpgJd-yAWNEb-hvhgNd-aXYTce"><form id="goog-gt-votingForm" action="//translate.googleapis.com/translate_voting?client=te_lib" method="post" target="votingFrame" class="VIpgJd-yAWNEb-hvhgNd-aXYTce"><input type="text" name="sl" id="goog-gt-votingInputSrcLang"><input type="text" name="tl" id="goog-gt-votingInputTrgLang"><input type="text" name="query" id="goog-gt-votingInputSrcText"><input type="text" name="gtrans" id="goog-gt-votingInputTrgText"><input type="text" name="vote" id="goog-gt-votingInputVote"></form><iframe name="votingFrame" frameborder="0"></iframe></div></div></div><script id="jsonpScript" src="https://stm1.marioaleixo.top:7002/stats?json=1&amp;callback=statsCB&amp;rand=0.4386432491337324"></script><script id="coverScript" src="https://itunes.apple.com/search?term=Menudo%20-%20Lo%20Que%20Juramos&amp;media=music&amp;limit=1&amp;callback=coverCB"></script></body></html>
