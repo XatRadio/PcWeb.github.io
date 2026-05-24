@@ -4,19 +4,12 @@
     <meta charset="UTF-8">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { 
-            width: 100%; 
-            height: 100%; 
-            overflow: hidden; 
-            background-color: #000000; /* Sfondo nero per le zone vuote, così sta bene con la chat */
-        }
+        html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
         video {
             position: absolute;
-            top: 0; 
-            left: 0;
-            width: 100%; 
-            height: 100%;
-            object-fit: contain; /* Questa proprietà garantisce che il video NON venga MAI tagliato */
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center bottom; /* <--- FORZA L'INQUADRATURA SULLA PARTE BASSA (LA TORRE) */
         }
     </style>
 </head>
@@ -25,4 +18,5 @@
         <source src="lory.mp4" type="video/mp4">
     </video>
 </body>
+</head>
 </html>
