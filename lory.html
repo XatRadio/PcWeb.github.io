@@ -7,9 +7,9 @@
         html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
         video {
             position: absolute;
+            top: 0; left: 0;
             width: 100%; height: 100%;
-            object-fit: cover;
-            object-position: center bottom; /* <--- FORZA L'INQUADRATURA SULLA PARTE BASSA (LA TORRE) */
+            object-fit: fill; /* <--- ADATTA IL VIDEO SENZA TAGLIARLO, LO STRETCHA SE NECESSARIO */
         }
     </style>
 </head>
@@ -18,5 +18,4 @@
         <source src="lory.mp4" type="video/mp4">
     </video>
 </body>
-</head>
 </html>
