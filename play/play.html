@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -8,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Merienda+One&display=swap" rel="stylesheet">
 
     <style type="text/css">
-        /* Configurazione Surfpage a Schermo Intero */
         html, body {
             margin: 0;
             padding: 0;
@@ -19,7 +17,6 @@
             font-family: 'Merienda One', cursive;
         }
 
-        /* La tua GIF originale fa da sfondo totale alla stanza di xat */
         body {
             background: url('https://xatimg.com/image/fGHl9LcaBrip.gif') no-repeat center center;
             background-size: cover;
@@ -30,7 +27,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Player Radio centrato: rimosso il background scuro fisso per non oscurare la chat */
         .ACHILLE {
             position: absolute;
             top: 215px;
@@ -46,12 +42,10 @@
             backface-visibility: hidden;
         }
 
-        /* Sfondo oscurato SOLO per quando il video MP4 dello spot è attivo */
         .ACHILLE.video-attivo {
             background: rgba(0, 0, 0, 0.85);
         }
 
-        /* Video MP4: Massima resa grafica */
         .ACHILLE .spot-video-layer {
             position: absolute;
             top: 0;
@@ -65,7 +59,6 @@
             display: none; 
         }
 
-        /* Il contenitore dei controlli della radio è trasparente per far vedere la chat sotto */
         .ACHILLE .player-ctr {
             height: 100%;
             width: 100%;
@@ -73,10 +66,9 @@
             top: 0;
             left: 0;
             z-index: 10;
-            pointer-events: none; /* Permette di cliccare la chat sottostante */
+            pointer-events: none;
         }
 
-        /* Abilitiamo i click solo sui pulsanti e controlli reali della radio */
         .ACHILLE .fixed-logo, 
         .ACHILLE .album-cover, 
         .ACHILLE .controls-wrapper, 
@@ -267,7 +259,6 @@
             display: inline-block;
         }
 
-        /* La chat di xat si trova ESATTAMENTE sotto al player, dentro lo stesso spazio */
         .xat-box {
             width: 100%;  
             height: 100%; 
@@ -275,7 +266,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 1; /* Sta dietro ai bottoni della radio */
+            z-index: 1; 
         }
 
         .nodisplay { display: none !important; }
@@ -295,16 +286,11 @@
 </head>
 <body>
 
-    <!-- IL PLAYER AGISCE DA CONTENITORE: COMPRENDE SIA LO SPOT CHE LA CHAT DI XAT -->
     <div class="ACHILLE" id="stream1">
-        
-        <!-- Video dello Spot MP4 (Copre la chat solo quando è attivo) -->
         <video class="spot-video-layer" id="spotVideo" playsinline loop muted></video>
 
-        <!-- SPAZIO CHATBOX (Trasparente, xat stamperà la chat qui dentro) -->
         <div class="xat-box"></div>
 
-        <!-- Elementi Grafici e Controlli del Player Milano Onde Radio -->
         <div class="fixed-logo">
             <img src="https://xatimg.com/image/e6Xy8dR1ONxx.jpg" alt="Logo">
         </div>
@@ -372,7 +358,7 @@
                 if (statoInterruttore === "off") {
                     statoInterruttore = "intro";
                     $(this).removeClass("play-btn").addClass("intro-active-btn");
-                    thisObj.addClass("video-attivo"); // Aggiunge lo sfondo scuro protettivo per il video
+                    thisObj.addClass("video-attivo");
                     audio.pause();
                     audio.src = ""; 
                     $videoEl.show();
@@ -383,7 +369,7 @@
                 } else if (statoInterruttore === "intro") {
                     statoInterruttore = "radio";
                     $(this).removeClass("intro-active-btn").addClass("stop-btn");
-                    thisObj.removeClass("video-attivo"); // Rimuove lo sfondo scuro: la chat torna visibile!
+                    thisObj.removeClass("video-attivo");
                     presentazioneAudio.pause();
                     videoDom.pause();
                     $videoEl.hide(); 
@@ -393,7 +379,7 @@
                 } else if (statoInterruttore === "radio") {
                     statoInterruttore = "intro";
                     $(this).removeClass("stop-btn").addClass("intro-active-btn");
-                    thisObj.addClass("video-attivo"); // Riattiva lo sfondo scuro per il video spot
+                    thisObj.addClass("video-attivo");
                     audio.pause();
                     audio.src = ""; 
                     $videoEl.show();
