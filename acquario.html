@@ -2,11 +2,27 @@
 <html>
 <head>
 <style>
-  body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: black; }
-  iframe { width: 100%; height: 100%; border: none; }
+  body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: black; }
+  video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Forza il video a coprire tutto lo spazio */
+  }
 </style>
 </head>
 <body>
-  <iframe src="acquario.mp4" allow="autoplay; fullscreen"></iframe>
+  <video autoplay muted loop playsinline id="sfondo">
+    <source src="acquario.mp4" type="video/mp4">
+    Il tuo browser non supporta il video.
+  </video>
+  <script>
+    // Forza il video a ripartire se si blocca
+    var video = document.getElementById("sfondo");
+    video.muted = true;
+    video.play();
+  </script>
 </body>
 </html>
